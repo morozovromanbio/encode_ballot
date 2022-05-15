@@ -25,7 +25,8 @@ async function main() {
   }
   if (process.argv.length < 3) throw new Error("Ballot address missing");
   const ballotAddress = process.argv[2];
-  console.log({ ballotAddress });
+  if (process.argv.length < 4) throw new Error("Voter address missing");
+  const voterAddress = process.argv[3];
   console.log(
     `Attaching ballot contract interface to address ${ballotAddress}`
   );
@@ -34,16 +35,14 @@ async function main() {
     ballotJson.abi,
     signer
   ) as Ballot;
-
-  const proposals = await ballotContract.proposals;
-  console.log({ proposals });
-  // if (proposals !== signer.address)
-  //   throw new Error("Caller is not the chairperson for this contract");
-  // console.log(`Giving right to vote to ${voterAddress}`);
-  // const tx = await ballotContract.giveRightToVote(voterAddress);
-  // console.log("Awaiting confirmations");
-  // await tx.wait();
-  // console.log(`Transaction completed. Hash: ${tx.hash}`);
+  const chairpersonAddress = await ballotContract.chairperson();
+  if (chairpersonAddress !== signer.address)
+    throw new Error("Caller is not the chairperson for this contract");
+  console.log(`Giving right to vote to ${voterAddress}`);
+  const tx = await ballotContract.giveRightToVote(voterAddress);
+  console.log("Awaiting confirmations");
+  await tx.wait();
+  console.log(`Transaction completed. Hash: ${tx.hash}`);
 }
 
 main().catch((error) => {

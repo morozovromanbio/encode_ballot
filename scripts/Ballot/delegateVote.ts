@@ -25,7 +25,8 @@ async function main() {
   }
   if (process.argv.length < 3) throw new Error("Ballot address missing");
   const ballotAddress = process.argv[2];
-  console.log({ ballotAddress });
+  if (process.argv.length < 4) throw new Error("Voter address missing");
+  const delegateAddress = process.argv[3];
   console.log(
     `Attaching ballot contract interface to address ${ballotAddress}`
   );
@@ -34,19 +35,13 @@ async function main() {
     ballotJson.abi,
     signer
   ) as Ballot;
-
-  const proposals = await ballotContract.proposals([0]);
-  console.log(proposals);
+  if (delegateAddress === signer.address)
+    throw new Error("Self-delegation is disallowed.");
+  console.log(`Delegate to vote to ${delegateAddress}`);
+  const tx = await ballotContract.delegate(delegateAddress);
   console.log("Awaiting confirmations");
-  const NUMBER_OF_PROPOSALS = 3;
-  for (let index = 0; index < NUMBER_OF_PROPOSALS; index++) {
-    const proposal = await ballotContract.proposals(index);
-    console.log(
-      `Proposal ${index} is ${proposal} named ${ethers.utils.parseBytes32String(
-        proposal[0]
-      )}`
-    );
-  }
+  await tx.wait();
+  console.log(`Transaction completed. Hash: ${tx.hash}`);
 }
 
 main().catch((error) => {

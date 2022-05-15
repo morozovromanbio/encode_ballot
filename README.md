@@ -16,56 +16,19 @@ castVote.ts
 txhash 0x34467962707e6be7114657b73b94c5cd1a001f7e3d699d01270ac1608bfb78f7
 
 - Delegate my vote passing user address as input and using the wallet in environment
+txhash: 0xb634cf6f2a70824ea2760e7ddbf57c8ee0ccf19395c81883ab93ba84c8491b6e
+
+yarn run ts-node --files ./scripts/Ballot/delegateVote.ts 0xA6095460053275317b0B4316A134BB0F581cAb8f 0x63FaC9201494f0bd17B9892B9fae4d52fe3BD377
+
+Using address 0x1d2E7324a49C54e26b33E580b74524AFE8Db3e6c
+Wallet balance 2.9870123689440207
+Attaching ballot contract interface to address 0xA6095460053275317b0B4316A134BB0F581cAb8f
+Delegate to vote to 0x63FaC9201494f0bd17B9892B9fae4d52fe3BD377
+
+
 
 - Query voting result and print to console
+queryVotingResult.ts
 
 
 
-
-
-
-
-This project demonstrates an advanced Hardhat use case, integrating other tools commonly used alongside Hardhat in the ecosystem.
-
-The project comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts. It also comes with a variety of other tools, preconfigured to work with the project code.
-
-Try running some of the following tasks:
-
-```shell
-npx hardhat accounts
-npx hardhat compile
-npx hardhat clean
-npx hardhat test
-npx hardhat node
-npx hardhat help
-REPORT_GAS=true npx hardhat test
-npx hardhat coverage
-npx hardhat run scripts/deploy.ts
-TS_NODE_FILES=true npx ts-node scripts/deploy.ts
-npx eslint '**/*.{js,ts}'
-npx eslint '**/*.{js,ts}' --fix
-npx prettier '**/*.{json,sol,md}' --check
-npx prettier '**/*.{json,sol,md}' --write
-npx solhint 'contracts/**/*.sol'
-npx solhint 'contracts/**/*.sol' --fix
-```
-
-# Etherscan verification
-
-To try out Etherscan verification, you first need to deploy a contract to an Ethereum network that's supported by Etherscan, such as Ropsten.
-
-In this project, copy the .env.example file to a file named .env, and then edit it to fill in the details. Enter your Etherscan API key, your Ropsten node URL (eg from Alchemy), and the private key of the account which will send the deployment transaction. With a valid .env file in place, first deploy your contract:
-
-```shell
-hardhat run --network ropsten scripts/deploy.ts
-```
-
-Then, copy the deployment address and paste it in to replace `DEPLOYED_CONTRACT_ADDRESS` in this command:
-
-```shell
-npx hardhat verify --network ropsten DEPLOYED_CONTRACT_ADDRESS "Hello, Hardhat!"
-```
-
-# Performance optimizations
-
-For faster runs of your tests and scripts, consider skipping ts-node's type checking by setting the environment variable `TS_NODE_TRANSPILE_ONLY` to `1` in hardhat's environment. For more details see [the documentation](https://hardhat.org/guides/typescript.html#performance-optimizations).

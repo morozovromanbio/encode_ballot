@@ -34,14 +34,8 @@ async function main() {
     signer
   ) as Ballot;
 
-//   const chairpersonAddress = await ballotContract.chairperson();
-//   if (chairpersonAddress !== signer.address)
-//     throw new Error("Caller is not the chairperson for this contract");
   const tx = await ballotContract.winnerName();
-  // console.log("Awaiting confirmations");
-  // await tx.wait();
-  //console.log(`Transaction completed. Hash: ${tx.hash}`);
-  console.log(tx);
+  console.log(`Win ${ethers.utils.parseBytes32String(tx)}`);
 }
 
 main().catch((error) => {
