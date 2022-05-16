@@ -35,8 +35,6 @@ async function main() {
     signer
   ) as Ballot;
 
-  const proposals = await ballotContract.proposals([0]);
-  console.log(proposals);
   console.log("Awaiting confirmations");
   const NUMBER_OF_PROPOSALS = 3;
   for (let index = 0; index < NUMBER_OF_PROPOSALS; index++) {

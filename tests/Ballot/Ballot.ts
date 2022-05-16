@@ -1,4 +1,6 @@
 import { expect } from "chai";
+import { randomBytes } from "crypto";
+import { Wallet } from "ethers";
 import { ethers } from "hardhat";
 // eslint-disable-next-line node/no-missing-import
 import { Ballot } from "../../typechain";
@@ -139,37 +141,61 @@ describe("Ballot", function () {
   });
 
   describe("when someone interact with the winningProposal function before any votes are cast", function () {
-    // TODO
-    it("is not implemented", async function () {
-      throw new Error("Not implemented");
+    it("before votes", async function () {
+      const winningProposal = await ballotContract.winningProposal();
+      expect(winningProposal).to.eq(0);
     });
   });
 
   describe("when someone interact with the winningProposal function after one vote is cast for the first proposal", function () {
-    // TODO
-    it("is not implemented", async function () {
-      throw new Error("Not implemented");
+    it("after one vote", async function () {
+      const voterAddress = accounts[1].address;
+      await giveRightToVote(ballotContract, voterAddress);
+      await ballotContract.voters(voterAddress);
+      const index = 1;
+      await ballotContract.connect(accounts[1]).vote(index);
+      const winningProposal = await ballotContract.winningProposal();
+      expect(winningProposal).to.eq(1);
     });
   });
 
   describe("when someone interact with the winnerName function before any votes are cast", function () {
-    // TODO
-    it("is not implemented", async function () {
-      throw new Error("Not implemented");
+    it("before votes", async function () {
+      const winnerName = await ballotContract.winnerName();
+      expect(ethers.utils.parseBytes32String(winnerName)).to.eq("Proposal 1");
     });
   });
 
   describe("when someone interact with the winnerName function after one vote is cast for the first proposal", function () {
-    // TODO
-    it("is not implemented", async function () {
-      throw new Error("Not implemented");
+    it("after one vote", async function () {
+      const voterAddress = accounts[1].address;
+      await giveRightToVote(ballotContract, voterAddress);
+      await ballotContract.voters(voterAddress);
+      const index = 1;
+      await ballotContract.connect(accounts[1]).vote(index);
+      const winnerName = await ballotContract.winnerName();
+      expect(ethers.utils.parseBytes32String(winnerName)).to.eq("Proposal 2");
     });
   });
 
   describe("when someone interact with the winningProposal function and winnerName after 5 random votes are cast for the proposals", function () {
-    // TODO
-    it("is not implemented", async function () {
-      throw new Error("Not implemented");
+    it("Winner Name with 5 random votes", async function () {
+      // const randomAddresses = new Array(5)
+      //   .fill(0)
+      //   .map(() => new Wallet(randomBytes(32).toString("hex")).address);
+      const randomVote = Math.floor(Math.random() * 5);
+      console.log("okS");
+      for (let index = 0; index < 4; index++) {
+        await giveRightToVote(ballotContract, accounts[index].address);
+        console.log("ok1");
+        await ballotContract.voters(accounts[index].address);
+        console.log("ok2");
+        await ballotContract.connect(accounts[index]).vote(randomVote);
+        console.log("ok3");
+      }
+      console.log("okF");
+      const winnerName = await ballotContract.winnerName();
+      console.log(ethers.utils.parseBytes32String(winnerName));
     });
   });
 });

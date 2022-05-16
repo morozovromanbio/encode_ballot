@@ -36,9 +36,6 @@ async function main() {
     signer
   ) as Ballot;
 
-//   const chairpersonAddress = await ballotContract.chairperson();
-//   if (chairpersonAddress !== signer.address)
-//     throw new Error("Caller is not the chairperson for this contract");
   console.log(`Cast a vote to a ballot to ${numberProposal}`);
   const tx = await ballotContract.vote(numberProposal);
   console.log("Awaiting confirmations");
